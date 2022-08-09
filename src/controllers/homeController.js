@@ -25,9 +25,18 @@ let postCRUD = async (req, res) => {
   console.log("message", message);
   res.send("create new user");
 };
+let displayGetCRUD = async (req, res) => {
+  let data = await CRUDService.getAllUser();
+  console.log("----------------");
+  console.log(data);
+  res.render("display-crud.ejs", {
+    dataTable: data,
+  });
+};
 module.exports = {
   getHomePage,
   getAboutPage,
   getCrudPage,
   postCRUD,
+  displayGetCRUD,
 };
