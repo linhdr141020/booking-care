@@ -47,7 +47,66 @@ let hashUserPassword = (password) => {
     }
   });
 };
+
+let getUserInfoById = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({ where: { id: userId } });
+
+      if (user) {
+        resolve(user);
+      } else {
+        resolve([]);
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let updateUserData = (data) => {
+  console.log("------------", data);
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: data.id },
+      });
+      if (user) {
+        user.firstName = data.firstname;
+        user.lastName = data.lastname;
+        user.address = data.address;
+
+        await user.save();
+        let allUser = await db.User.findAll();
+        resolve(allUser);
+      } else {
+        resolve();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  });
+};
+
+let deleteUserById = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: userId },
+      });
+      if (user) {
+        user.destroy();
+      }
+      resolve();
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
   createNewUser,
   getAllUser,
+  getUserInfoById,
+  updateUserData,
+  deleteUserById,
 };
